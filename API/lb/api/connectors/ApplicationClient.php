@@ -89,11 +89,9 @@ class ApplicationClient
 			
 		}
 	
-		if (empty($nonSubscribedRecipient)) {
-			$data["recipientList"] = $recipientArray;
-		} else {
-			$data["nonSubscribedRecipient"] = $nonSubscribedRecipient;
-		}
+		$data["recipientList"] = $recipientArray;
+		$data["nonSubscribedRecipient"] = $nonSubscribedRecipient;
+		
 			
 		$returnObj = $this->executePost("setLetter", $data);
 		return $returnObj["letterId"];

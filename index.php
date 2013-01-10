@@ -21,7 +21,7 @@ try {
 	$identifierOrEmail = "johannbrocail@enaco.fr";
 	$password = "63JGP5TU";
 	$letterSubject = "Test email legalbox";
-	$recipientEmail = "ooskinzoo@hotmail.com";
+	$recipientEmail = "zimzim62000@gmail.com";
 	$text = "Have a good day PHP!!";
 	$attachmentFile = "";
 
@@ -54,12 +54,13 @@ try {
 	$draft->setTitle($letterSubject);
 	$draft->setContent($text);
 	
+	
 	echo "<div>new DraftRecipient()</div>";
 	$recipient = new DraftRecipient();
 	$recipient->setEmailAddress($recipientEmail);
 	$draft->addRecipient($recipient);
-
-
+	
+	
 
 
 	/**
