@@ -41,8 +41,7 @@ try {
     $applicationClient->session = $sessionClient;
 
 
-    $applicationClient = $sessionClient->createApplicationClient();
-
+   
 	echo "<div>populate delivery type list</div>";
 	LetterDeliveryType::populateList($applicationClient);
 	
