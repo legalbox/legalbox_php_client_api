@@ -1,0 +1,8 @@
+{
+	"minimum-stability": "dev",
+	"require": {
+		"symfony/dependency-injection" : "2.1.*", 
+		"symfony/class-loader" : "2.1.*",
+		"phpunit/phpunit" : "3.7.*"
+	}
+}

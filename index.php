@@ -6,15 +6,18 @@
 	<body>
 
 <?php
+
+use API\connectors\SessionClient;
+use API\connectors\ApplicationClient;
+use API\beans\LetterDeliveryType;
+use API\APIResourcesManager;
+use API\beans\Draft;
+use API\beans\DraftRecipient;
+
 ini_set('display_errors', 'on');
-include ("API/lb/api/APIResourcesManager.php");
-include ("API/lb/api/connectors/SessionClient.php");
-include ("API/lb/api/connectors/ApplicationClient.php");
-include ("API/lb/api/connectors/LetterAttachmentClient.php");
-include ("API/lb/api/beans/LetterDeliveryType.php");
-include ("API/lb/api/beans/Draft.php");
-include ("API/lb/api/beans/DraftAttachment.php");
-include ("API/lb/api/beans/DraftRecipient.php");
+
+require_once 'autoload.php';
+
 
 try {
 	// INIT
@@ -28,36 +31,34 @@ try {
 	// enable or disable HTTP trace
 	SessionClient::$debug = true;
 	
-	$sessionClient = new SessionClient();
+	$SessionClient = new SessionClient($identifierOrEmail, $password);
 	
-	$sessionClient->openSession($identifierOrEmail, $password);
 
 	echo "openSession<br/>\n";
-    echo "sessionId=" . $sessionClient->sessionId . "<br/>\n";
-    echo "userId=" . $sessionClient->userId . "<br/>\n";
-    echo "languageCode=" . $sessionClient->languageCode . "<br/>\n";
+    echo "sessionId=" . $SessionClient->sessionId . "<br/>\n";
+    echo "userId=" . $SessionClient->userId . "<br/>\n";
+    echo "languageCode=" . $SessionClient->languageCode . "<br/>\n";
     
-    $applicationClient = new ApplicationClient();
-    $applicationClient->session = $sessionClient;
+    $ApplicationClient = new ApplicationClient($SessionClient);
 
 
    
 	echo "<div>populate delivery type list</div>";
-	LetterDeliveryType::populateList($applicationClient);
+	LetterDeliveryType::populateList($ApplicationClient);
 	
 	echo "<div>sending letter...</div>";
 
-	$draft = new Draft();
+	$Draft = new Draft();
 	echo "<div>new Draft()</div>";
-	$draft->setLetterDeliveryCode(LetterDeliveryType::$CERTIFIED_LETTER_CODE);
-	$draft->setTitle($letterSubject);
-	$draft->setContent($text);
+	$Draft->setLetterDeliveryCode(LetterDeliveryType::$CERTIFIED_LETTER_CODE);
+	$Draft->setTitle($letterSubject);
+	$Draft->setContent($text);
 	
 	
 	echo "<div>new DraftRecipient()</div>";
-	$recipient = new DraftRecipient();
-	$recipient->setEmailAddress($recipientEmail);
-	$draft->addRecipient($recipient);
+	$Recipient = new DraftRecipient();
+	$Recipient->setEmailAddress($recipientEmail);
+	$Draft->addRecipient($Recipient);
 	
 	
 
@@ -67,17 +68,17 @@ try {
 	 */
 	if(!empty($attachmentFile)) {
 		echo "<br/>add attachment : " . $attachmentFile;
-		$attachment = DraftAttachment::createAttachment($attachmentFile);
-		$draft->addAttachment($attachment);
+		$Attachment = DraftAttachment::createAttachment($attachmentFile);
+		$Draft->addAttachment($Attachment);
 	}
 
 
 	echo "<div>... send...</div>";
-	$draft->send($applicationClient, false);
+	$Draft->send($ApplicationClient, false);
 
 
 	echo "<div>closeSession</div>\n";
-    $sessionClient->closeSession();
+    $SessionClient->closeSession();
     
 } catch (HttpException $ex) {
     echo $ex;
