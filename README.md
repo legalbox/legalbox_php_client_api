@@ -1,4 +1,4 @@
-client_api_php_legalbox
+legalbox_php_client_api
 =======================
 
-Client API PHP LegalBox
+LegalBox PHP Client API
