@@ -21,6 +21,9 @@
 /**
  * @author David Keller <david.keller@legalbox.com>
  */
+
+namespace API;
+
 class APIResourcesManager
 {
 	public static $urlApplication = 'https://mail.legalbox.com/restful/application';
@@ -29,4 +32,3 @@ class APIResourcesManager
 	public static $downloadUrl = 'https://mail.legalbox.com/restful/fileDownload';
 		
 }
-?>

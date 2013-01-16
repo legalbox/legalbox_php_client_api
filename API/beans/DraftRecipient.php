@@ -20,7 +20,12 @@
 
 /**
  * @author David Keller <david.keller@legalbox.com>
+ * @author Johann Brocail <johannbrocail@enaco.fr>
  */
+
+namespace API\beans;
+
+
 class DraftRecipient
 {
 	protected $emailAddress;
@@ -75,11 +80,11 @@ class DraftRecipient
 	}
 	
 	public function addSignatureRequest($attachment) {
-		$this->signatureRequestList.add($attachment);
+		return array_push($this->signatureRequestList, $attachment);
 	}
 	
 	public function getSignatureRequestIndexArray() {
-		if (signatureRequestList.size() == 0) {
+		if (count($this->signatureRequestList) == 0) {
 			return;
 		}
 		$indexArray = new JSONArray();
@@ -89,5 +94,3 @@ class DraftRecipient
 		return $indexArray;
 	}
 }
-
-?>

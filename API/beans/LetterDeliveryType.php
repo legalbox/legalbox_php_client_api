@@ -20,8 +20,14 @@
 
 /**
  * @author David Keller <david.keller@legalbox.com>
+ * @author Johann Brocail <johannbrocail@enaco.fr>
  */
-class LetterDeliveryType
+
+namespace API\beans;
+
+use API\connectors\ApplicationClient;
+
+class LetterDeliveryType extends AbstractBeans
 {
 	protected $id;
 	protected $code;
@@ -32,9 +38,24 @@ class LetterDeliveryType
 	public static $LRE_CODE = "LRE";
 	public static $CERTIFIED_LETTER_CODE = "CERTIFIED_LETTER";
 	
-	public static function populateList($applicationClient) {
-		$deliveryAndLetterTypes = $applicationClient->getDeliveryAndLetterTypes();
-		LetterDeliveryType::populateListByDeliveryTypeList($deliveryAndLetterTypes["letterDeliveryTypes"]);
+	public function __construct(ApplicationClient $ApplicationClient, $letterDeliveryTypeId = null)
+	{
+		parent::__construct($ApplicationClient);
+		
+		if($letterDeliveryTypeId)
+		{
+			$datas = array(
+				'letterDeliveryTypeId' => $letterDeliveryTypeId
+			);
+			
+			//$this->getApplicationClient()->execute('getLetterDeliveryTypeDetails', $datas);
+			$this->id = $letterDeliveryTypeId;
+		}
+	}
+	
+	public static function populateList(ApplicationClient $ApplicationClient) {
+		$deliveryAndLetterTypes = $ApplicationClient->getDeliveryAndLetterTypes();
+		self::populateListByDeliveryTypeList($deliveryAndLetterTypes["letterDeliveryTypes"]);
 	}
 
 
@@ -44,18 +65,18 @@ class LetterDeliveryType
 		
 		for ($i = 0; $i < count($list); $i++) {
 			$item = $list[$i];
-			$type = new LetterDeliveryType();
+			$type = new self();
 			$type->id = $item["_id"];
 			$type->code = $item["code"];
 			$type->name = $item["name"];
-			array_push(LetterDeliveryType::$letterDeliveryTypes, $type);
+			array_push(self::$letterDeliveryTypes, $type);
 		}
 		
 	}
 	
 	public static function getLetterDeliveryTypeById($id) {
-		for ($i = 0; $i < count(LetterDeliveryType::$letterDeliveryTypes); $i++) {
-			$type = LetterDeliveryType::$letterDeliveryTypess[$i];
+		for ($i = 0; $i < count(self::$letterDeliveryTypes); $i++) {
+			$type = self::$letterDeliveryTypess[$i];
 			if ($type->_id == $id) {
 				return $type;
 			}
@@ -63,8 +84,8 @@ class LetterDeliveryType
 	}
 	
 	public static function getLetterDeliveryTypeByCode($code) {
-		for ($i = 0; $i < count(LetterDeliveryType::$letterDeliveryTypes); $i++) {
-			$type = LetterDeliveryType::$letterDeliveryTypes[$i];
+		for ($i = 0; $i < count(self::$letterDeliveryTypes); $i++) {
+			$type = self::$letterDeliveryTypes[$i];
 			if ($type->code == $code) {
 				return $type;
 			}
@@ -83,5 +104,3 @@ class LetterDeliveryType
 		return $this->name;
 	}
 }
-
-?>
