@@ -38,7 +38,6 @@ class LetterDeliveryType extends AbstractBeans
 	public static $LRE_CODE = "LRE";
 	public static $CERTIFIED_LETTER_CODE = "CERTIFIED_LETTER";
 	
-	
 	public function __construct(ApplicationClient $ApplicationClient, $letterDeliveryTypeId = null)
 	{
 		parent::__construct($ApplicationClient);

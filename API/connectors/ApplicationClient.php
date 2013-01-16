@@ -40,7 +40,7 @@ class ApplicationClient
 		$this->_SessionClient = $SessionClient;
 	}
 	
-	public function execute($request, $data)
+	public function execute($request, $data, $filename = null)
 	{
 		$datas = array();
 		
@@ -50,7 +50,7 @@ class ApplicationClient
 		$datas['userId'] = $this->_SessionClient->userId;
 		
 		
-		$response = $this->_SessionClient->execute(self::URL_APPLICATION, $datas);
+		$response = $this->_SessionClient->execute(self::URL_APPLICATION, $datas, $filename);
 		
 		if($response['error'])
 		{
@@ -303,7 +303,15 @@ class ApplicationClient
 		}
 
 		$returnObj = $this->execute('setLetter', $datas);
-		return $returnObj["letterId"];
+		return $Draft->setLetterId($returnObj["letterId"]);
+	}
+	
+	public function sendLetter(Draft $Draft, $toArchive = false)
+	{
+		$datas = array();
+		$datas["letterId"] = $Draft->getLetterId();
+		$datas["toArchive"] = $toArchive;
+		return $this->execute('sendLetter', $datas);
 	}
 	
 	public function getContactAndPendingInvitationLists()

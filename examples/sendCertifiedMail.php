@@ -52,7 +52,7 @@ try {
 	$identifierOrEmail = "johannbrocail@enaco.fr";
 	$password = "63JGP5TU";
 	$letterSubject = "Hello PHP";
-	$recipientEmail = "ooskinzoo@hotmail.com";
+	$recipientEmail = "admin@enaco.fr";
 
 	$text = "Have a good day PHP!!";
 	$attachmentFile = "example.pdf";
@@ -117,7 +117,10 @@ try {
 
 
 	echo "<div>... send...</div>";
-	$Draft->send();
+	//$Draft->send();
+	$ApplicationClient->setLetter($Draft);
+	$ApplicationClient->sendLetter($Draft);
+	
 
 
 	echo "<div>closeSession</div>\n";

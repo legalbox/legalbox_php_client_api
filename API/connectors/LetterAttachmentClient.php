@@ -25,11 +25,34 @@
 
 namespace API\connectors;
 
+use API\beans\DraftAttachment;
+
 class LetterAttachmentClient
 {
-	public $application;
-
+	const URL_UPLOAD = 'https://mail.legalbox.com/restful/fileUpload';
+	const URL_DOWNLOAD = 'https://mail.legalbox.com/restful/fileDownload';
 	
+	private $_SessionClient;
+
+	public function __construct(SessionClient $SessionClient)
+	{
+		$this->_SessionClient = $SessionClient;	
+	}
+	
+	public function execute($url, $datas, $filename = null)
+	{
+		$response = $this->_SessionClient->execute($url, $datas, $filename);
+	}
+	
+	public function uploadAttachment(DraftAttachment $Attachment, $datas, $filename = null)
+	{
+		$datas = array(
+			
+		);
+		return $this->execute(self::URL_UPLOAD, $datas, $filename);
+	}
+	
+	/*
 	public function uploadAttachment($letterId, $attachment) {
 				
 		$jsonParameters = array();
@@ -58,6 +81,6 @@ class LetterAttachmentClient
 //				.addAttachmentSignatureRemote(letterId, attachment.getIndex(), attachment.getBase64Signature());
 //		}
 		
-	}
+	}*/
 		
 }

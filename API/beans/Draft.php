@@ -61,6 +61,8 @@ class Draft extends AbstractBeans
 			
 			$this->getApplicationClient()->execute('getDraftDetails', $datas);
 		}
+
+
 	}
 	
 	/**
@@ -217,15 +219,14 @@ class Draft extends AbstractBeans
 	{
 		$this->letterId = $this->getApplicationClient()->setLetter($this);
 		
-		if(!empty($this->attachmentList))
+		if(count($this->attachmentList))
 		{
 			$attachmentClient = new LetterAttachmentClient();
 			$attachmentClient->application = $this->getApplicationClient();
 			
-			for($i = 0; $i < count($this->attachmentList); $i++)
+			foreach($this->attachmentList as $k => $Attachment)
 			{
-				$attachment = $this->attachmentList[$i];
-				$attachmentClient->uploadAttachment($this->letterId, $attachment);
+				$attachmentClient->uploadAttachment($this->letterId, $Attachment);
 			}
 		}
 		
