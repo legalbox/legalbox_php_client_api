@@ -213,14 +213,14 @@ class Draft extends AbstractBeans
 	}
 	
 	
-	public function send($application, $toArchive)
+	public function send($toArchive = false)
 	{
-		$this->letterId = $application->createLetterRemote($this);
+		$this->letterId = $this->getApplicationClient()->setLetter($this);
 		
 		if(!empty($this->attachmentList))
 		{
 			$attachmentClient = new LetterAttachmentClient();
-			$attachmentClient->application = $application;
+			$attachmentClient->application = $this->getApplicationClient();
 			
 			for($i = 0; $i < count($this->attachmentList); $i++)
 			{
@@ -229,8 +229,6 @@ class Draft extends AbstractBeans
 			}
 		}
 		
-		$application->sendLetterRemote($this->letterId, $toArchive);
+		$this->getApplicationClient()->sendLetterRemote($this->letterId, $toArchive);
 	}
 }
-
-?>

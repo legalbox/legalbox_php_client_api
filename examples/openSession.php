@@ -33,7 +33,6 @@ use API\connectors\SessionClient;
 	<body>
 
 <?php
-ini_set("display_errors", "on");
 
 require_once (__DIR__.'/../API/connectors/SessionClient.php');
 

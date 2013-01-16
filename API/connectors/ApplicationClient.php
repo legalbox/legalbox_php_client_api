@@ -242,6 +242,70 @@ class ApplicationClient
 		return $this->execute('getDeliveryAndLetterTypes', $datas);
 	}
 	
+	/**
+	 * Préparer un courrier / créer un brouillon
+	 * @param Draft $Draft
+	 */
+	public function setLetter(Draft $Draft)
+	{
+		$datas = array(
+			'letterId' => null,
+			'letterDeliveryTypeId' => $Draft->getLetterDeliveryType()->getId(),
+			'letterTypeId' => null, 
+			'title' => $Draft->getTitle(),
+			'text' => $Draft->getText()
+		);
+		
+
+		
+		$recipientArray = array();
+		$recipientList = $Draft->getRecipientList();
+		
+		$nonSubscribedRecipient = array();
+		for($i = 0; $i < count($recipientList); $i++)
+		{
+			$recipient = $recipientList[$i];
+			
+			$response = $this->isEmailOrIdentifierRegistered($recipient->getEmailAddress());
+			
+			if($response["isRegistered"])
+			{
+				$userId = $response["userId"];
+			}
+			
+			if(empty($userId))
+			{
+				echo "<br/>set nonSubscribedRecipient";
+				$nonSubscribedRecipient["isProfessional"] = $recipient->isProfessional();
+				$nonSubscribedRecipient["prepayeResponse"] = $recipient->isPrepayedRecipient();
+				$nonSubscribedRecipient["emailAddress"] = $recipient->getEmailAddress();
+				$nonSubscribedRecipient["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
+				$nonSubscribedRecipient["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
+			}
+			else
+			{
+				echo "<br/>set recipientObject";
+				$recipientObject = array();
+				$recipientObject["userId"] = $userId;
+				$recipientObject["prepayeResponse"] = $recipient->isPrepayedRecipient();
+				$recipientObject["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
+				$recipientObject["isCC"] = $recipient->isCarbonCopyRecipient();
+				//				$recipientObject["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
+				array_push($recipientArray, $recipientObject);
+			}
+		
+		}
+	
+		$datas["recipientList"] = $recipientArray;
+		
+		if (!empty($nonSubscribedRecipient)) {
+			$datas["nonSubscribedRecipient"] = $nonSubscribedRecipient;
+		}
+
+		$returnObj = $this->execute('setLetter', $datas);
+		return $returnObj["letterId"];
+	}
+	
 	public function getContactAndPendingInvitationLists()
 	{
 		$datas = array( 
@@ -269,18 +333,7 @@ class ApplicationClient
 		
 		return $this->execute('isEmailOrIdentifierRegistered', $datas);
 	}
-	
-	/*
-	public function getDeliveryAndLetterTypes()
-	{
-		$datas = array( 
-			'request' => 'getDeliveryAndLetterTypes', 
-			"languageCode" => $this->_session->languageCode
-		);
-		
-		return $this->execute($datas);
-	}
-	*/
+
 	public function getUserInformations()
 	{
 		$datas = array( 

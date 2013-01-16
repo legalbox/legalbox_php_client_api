@@ -105,5 +105,3 @@ class LetterDeliveryType extends AbstractBeans
 		return $this->name;
 	}
 }
-
-?>

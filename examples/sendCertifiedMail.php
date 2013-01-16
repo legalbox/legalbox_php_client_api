@@ -37,7 +37,6 @@ use API\connectors\SessionClient;
 	<body>
 
 <?php
-ini_set("display_errors", "on");
 
 include (__DIR__.'/../API/connectors/SessionClient.php');
 include (__DIR__.'/../API/connectors/ApplicationClient.php');
@@ -56,7 +55,7 @@ try {
 	$recipientEmail = "ooskinzoo@hotmail.com";
 
 	$text = "Have a good day PHP!!";
-	$attachmentFile = "";
+	$attachmentFile = "example.pdf";
 
 	// enable or disable HTTP trace
 	SessionClient::$debug = true;
@@ -118,7 +117,7 @@ try {
 
 
 	echo "<div>... send...</div>";
-	$Draft->send($ApplicationClient, false);
+	$Draft->send();
 
 
 	echo "<div>closeSession</div>\n";
