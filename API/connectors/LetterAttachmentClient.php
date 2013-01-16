@@ -25,6 +25,8 @@
 
 namespace API\connectors;
 
+use API\beans\Draft;
+
 use API\beans\DraftAttachment;
 
 class LetterAttachmentClient
@@ -41,15 +43,31 @@ class LetterAttachmentClient
 	
 	public function execute($url, $datas, $filename = null)
 	{
+		$datas['sessionId'] = $this->_SessionClient->sessionId;
+		$datas['userId'] = $this->_SessionClient->userId;
+		
+		$url .= '?sessionId=' . $this->_SessionClient->sessionId
+			. '&userId=' . $this->_SessionClient->userId
+			. '&letterId=' . $datas["letterId"]
+			. '&index=' . $datas["index"]
+			. '&X-Progress-ID=' . $datas["X-Progress-ID"]
+			. '&filename=' . $datas["filename"];
+			
 		$response = $this->_SessionClient->execute($url, $datas, $filename);
+		
+		
 	}
 	
-	public function uploadAttachment(DraftAttachment $Attachment, $datas, $filename = null)
+	public function uploadAttachment(Draft $Draft, DraftAttachment $Attachment)
 	{
 		$datas = array(
-			
+			'letterId' => $Draft->getLetterId(),
+			'index' => $Attachment->getIndex(), 
+			'X-Progress-ID' => $Draft->getLetterId().'_'.$Attachment->getIndex(),
+			'filename' => $Attachment->getFilename()
 		);
-		return $this->execute(self::URL_UPLOAD, $datas, $filename);
+		
+		return $this->execute(self::URL_UPLOAD, $datas, $Attachment->getPathFilename());
 	}
 	
 	/*

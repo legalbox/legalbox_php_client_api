@@ -308,9 +308,22 @@ class ApplicationClient
 	
 	public function sendLetter(Draft $Draft, $toArchive = false)
 	{
-		$datas = array();
-		$datas["letterId"] = $Draft->getLetterId();
-		$datas["toArchive"] = $toArchive;
+		$datas = array(
+			'letterId' => $Draft->getLetterId(),
+			'toArchive' => $toArchive
+		);
+
+		if(count($Draft->getAttachmentList()))
+		{
+			$AttachmentClient = new LetterAttachmentClient($this->_SessionClient);
+			$AttachmentClient->application = $this;
+			
+			foreach($Draft->getAttachmentList() as $k => $Attachment)
+			{
+				$AttachmentClient->uploadAttachment($Draft, $Attachment);
+			}
+		}
+		
 		return $this->execute('sendLetter', $datas);
 	}
 	

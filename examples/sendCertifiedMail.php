@@ -55,7 +55,7 @@ try {
 	$recipientEmail = "admin@enaco.fr";
 
 	$text = "Have a good day PHP!!";
-	$attachmentFile = "";
+	$attachmentFile = "example.pdf";
 
 	// enable or disable HTTP trace
 	SessionClient::$debug = true;
@@ -112,6 +112,7 @@ try {
 	if(!empty($attachmentFile)) {
 		echo "<br/>add attachment : " . $attachmentFile;
 		$DraftAttachment = new DraftAttachment($ApplicationClient);
+		$DraftAttachment->setFilename($attachmentFile);
 		$Draft->addAttachment($DraftAttachment);
 	}
 

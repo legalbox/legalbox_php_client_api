@@ -202,7 +202,9 @@ class Draft extends AbstractBeans
 	
 	public function addAttachment(DraftAttachment $Attachment)
 	{
-		return $this->attachmentList->append($Attachment);
+		$this->attachmentList->append($Attachment);
+		
+		$Attachment->setIndex($this->attachmentList->count());
 	}
 	
 	public function getAttachmentByFilename($attachmentFilename)

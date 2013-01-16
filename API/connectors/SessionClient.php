@@ -56,6 +56,11 @@ class SessionClient
 			'jsonParams' => json_encode($parameters)
 		));
 		
+		if($filename)
+		{
+			$HttpRequest->addPostFile(basename($filename), $filename);
+		}
+		
 		if(self::$debug)
 		{
 			print "<div style='border: 1px #aaa solid; margin:5px; pading:5px;'><pre>\n";
