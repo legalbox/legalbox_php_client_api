@@ -55,7 +55,7 @@ try {
 	$recipientEmail = "admin@enaco.fr";
 
 	$text = "Have a good day PHP!!";
-	$attachmentFile = "example.pdf";
+	$attachmentFile = "";
 
 	// enable or disable HTTP trace
 	SessionClient::$debug = true;
