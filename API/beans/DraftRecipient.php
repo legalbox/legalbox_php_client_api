@@ -29,7 +29,7 @@ namespace API\beans;
 class DraftRecipient
 {
 	protected $emailAddress;
-	protected $isProfessional;
+	protected $isProfessional = false;
 	protected $notificationLanguageCode;
 	protected $isCarbonCopyRecipient = false;
 	protected $isPrepayedRecipient = false;

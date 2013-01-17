@@ -52,7 +52,7 @@ try {
 	$identifierOrEmail = "johannbrocail@enaco.fr";
 	$password = "63JGP5TU";
 	$letterSubject = "Hello PHP";
-	$recipientEmail = "admin@enaco.fr";
+	$recipientEmail = "ooskinzoo@hotmail.com";
 
 	$text = "Have a good day PHP!!";
 	$attachmentFile = "example.pdf";
@@ -102,6 +102,7 @@ try {
 	echo "<div>new DraftRecipient()</div>";
 	$Recipient = new DraftRecipient();
 	$Recipient->setEmailAddress($recipientEmail);
+	$Recipient->setProfessional(false);
 	$Draft->addRecipient($Recipient);
 
 

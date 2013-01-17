@@ -40,7 +40,7 @@ class ApplicationClient
 		$this->_SessionClient = $SessionClient;
 	}
 	
-	public function execute($request, $data, $filename = null)
+	public function execute($request, $data = array(), $filename = null)
 	{
 		$datas = array();
 		
@@ -61,7 +61,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des fuseaux horaires
+	 * Etablir la liste des fuseaux horaires.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -82,7 +82,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des pays
+	 * Etablir la liste des pays.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -103,7 +103,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Récupérer le libellé d'un pays
+	 * Récupérer le libellé d'un pays.
 	 * @param Integer $countryId Id du pays
 	 * @param String $languageCode Code de la langue
 	 * @return Array
@@ -127,7 +127,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des états d'un courrier
+	 * Etablir la liste des états d'un courrier.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -148,7 +148,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des langues disponibles
+	 * Etablir la liste des langues disponibles.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -169,7 +169,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des dossiers (de courriers)
+	 * Etablir la liste des dossiers (de courriers).
 	 * @return Array
 	 */
 	public function getLetterFolderList()
@@ -180,7 +180,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des types d'entreprise
+	 * Etablir la liste des types d'entreprise.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -201,7 +201,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des types des news
+	 * Etablir la liste des types des news.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -222,7 +222,7 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Etablir la liste des modes de distribution et des types de courrier
+	 * Etablir la liste des modes de distribution et des types de courrier.
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
@@ -243,7 +243,106 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Préparer un courrier / créer un brouillon
+	 * Lire dans le cache les évènements liés a la session courante.
+	 * @param String $languageCode Code de la langue
+	 * @return Array
+	 */
+	public function readCache($languageCode = null)
+	{
+		$datas = array();
+		
+		if($languageCode)
+		{
+			$datas['languageCode'] = $languageCode;
+		}
+		else
+		{
+			$datas['languageCode'] = $this->_SessionClient->languageCode;
+		}
+		
+		return $this->execute('readCache', $datas);
+	}
+	
+	/**
+	 * Récupère toutes les informations associées à l'utilisateur courant.
+	 * @return Array
+	 */
+	public function getUserInformations()
+	{
+		return $this->execute('getUserInformations');	
+	}
+	
+	/**
+	 * Récupère l'identifiant de l'utilisateur connecté.
+	 * @return Array
+	 */
+	public function getUserIdentifier()
+	{
+		return $this->execute('getUserIdentifier');	
+	}
+	
+	/**
+	 * Modification du mot de passe de l'utilisateur connecté.
+	 * Cette action provoque un envoie automatique de notification par e-mail vers l'utilisateur concerné.
+	 * @param String $currentPassword
+	 * @param String $newPassword
+	 * @param String $mnemonicSentence
+	 * @return Array
+	 */
+	public function updatePassword($currentPassword, $newPassword, $mnemonicSentence)
+	{
+		$datas = array(
+			'currentPassword' => $currentPassword,
+			'newPassword' => $newPassword,
+			'mnemonicSentence' => $mnemonicSentence
+		);
+		
+		return $this->execute('updatePassword', $datas);	
+	}
+	
+	/**
+	 * Récupère les crédits d'envoie et d'archivage disponible pour l'utilisateur de la session.
+	 * @return Array
+	 */
+	public function getCreditBalance()
+	{
+		return $this->execute('getCreditBalance');
+	}
+	
+	/**
+	 * Vérifie si l'identifiant ou adresse e-mail renseignée correspond à un utilisateur LegalBox.
+	 * @param String $identifierOrEmail Identifiant ou adresse e-mail à vérifier
+	 * @return Array
+	 */
+	public function isEmailOrIdentifierRegistered($identifierOrEmail)
+	{
+		$datas = array(
+			'identifierOrEmail' => $identifierOrEmail
+		);
+		
+		return $this->execute('isEmailOrIdentifierRegistered', $datas);
+	}
+	
+	/**
+	 * Création d'un nouveau contact pour l'utilisateur de la session.
+	 * @todo Bean User, and Beans ContactAttributes
+	 */
+	public function createContact()
+	{
+		
+	}
+	
+	/**
+	 * Modification du contact
+	 */
+	public function updateContact()
+	{
+		
+	}
+	
+	
+	/**
+	 * Préparer un courrier / créer un brouillon.
 	 * @param Draft $Draft
 	 */
 	public function setLetter(Draft $Draft)
@@ -256,17 +355,13 @@ class ApplicationClient
 			'text' => $Draft->getText()
 		);
 		
-
-		
 		$recipientArray = array();
-		$recipientList = $Draft->getRecipientList();
-		
 		$nonSubscribedRecipient = array();
-		for($i = 0; $i < count($recipientList); $i++)
+		
+		foreach($Draft->getRecipientList() as $k => $Recipient)
 		{
-			$recipient = $recipientList[$i];
 			
-			$response = $this->isEmailOrIdentifierRegistered($recipient->getEmailAddress());
+			$response = $this->isEmailOrIdentifierRegistered($Recipient->getEmailAddress());
 			
 			if($response["isRegistered"])
 			{
@@ -276,21 +371,21 @@ class ApplicationClient
 			if(empty($userId))
 			{
 				echo "<br/>set nonSubscribedRecipient";
-				$nonSubscribedRecipient["isProfessional"] = $recipient->isProfessional();
-				$nonSubscribedRecipient["prepayeResponse"] = $recipient->isPrepayedRecipient();
-				$nonSubscribedRecipient["emailAddress"] = $recipient->getEmailAddress();
-				$nonSubscribedRecipient["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
-				$nonSubscribedRecipient["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
+				$nonSubscribedRecipient["isProfessional"] = $Recipient->isProfessional();
+				$nonSubscribedRecipient["prepayeResponse"] = $Recipient->isPrepayedRecipient();
+				$nonSubscribedRecipient["emailAddress"] = $Recipient->getEmailAddress();
+				$nonSubscribedRecipient["notificationLanguageCode"] = $Recipient->getNotificationLanguageCode();
+				$nonSubscribedRecipient["attachmentSignatureRequestList"] = $Recipient->getSignatureRequestIndexArray();
 			}
 			else
 			{
 				echo "<br/>set recipientObject";
 				$recipientObject = array();
 				$recipientObject["userId"] = $userId;
-				$recipientObject["prepayeResponse"] = $recipient->isPrepayedRecipient();
-				$recipientObject["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
-				$recipientObject["isCC"] = $recipient->isCarbonCopyRecipient();
-				//				$recipientObject["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
+				$recipientObject["prepayeResponse"] = $Recipient->isPrepayedRecipient();
+				$recipientObject["notificationLanguageCode"] = $Recipient->getNotificationLanguageCode();
+				$recipientObject["isCC"] = $Recipient->isCarbonCopyRecipient();
+				//$recipientObject["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
 				array_push($recipientArray, $recipientObject);
 			}
 		
@@ -346,32 +441,6 @@ class ApplicationClient
 		return $this->execute($datas);
 	}
 	
-	public function isEmailOrIdentifierRegistered($identifierOrEmail)
-	{
-		$datas = array(
-			'identifierOrEmail' => $identifierOrEmail
-		);
-		
-		return $this->execute('isEmailOrIdentifierRegistered', $datas);
-	}
-
-	public function getUserInformations()
-	{
-		$datas = array( 
-			'request' => 'getUserInformations'
-		);
-		
-		return $this->execute($datas);
-	}
-	
-	public function getCreditBalance()
-	{
-		$datas = array( 
-			'request' => 'getCreditBalance'
-		);
-		
-		return $this->execute($datas);
-	}
 	
 	public function createLetterRemote(Draft $Draft)
 	{
