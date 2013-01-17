@@ -83,14 +83,5 @@ class DraftRecipient
 		return array_push($this->signatureRequestList, $attachment);
 	}
 	
-	public function getSignatureRequestIndexArray() {
-		if (count($this->signatureRequestList) == 0) {
-			return;
-		}
-		$indexArray = new JSONArray();
-//		for (DraftAttachment attachment : signatureRequestList) {
-//			indexArray.put(attachment.getIndex());
-//		}
-		return $indexArray;
-	}
+
 }

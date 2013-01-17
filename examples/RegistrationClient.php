@@ -19,9 +19,9 @@
  */
 
 /**
- * @author David Keller <david.keller@legalbox.com>
  * @author Johann Brocail <johannbrocail@enaco.fr>
  */
+use API\connectors\RegistrationClient;
 use API\beans\DraftAttachment;
 use API\beans\DraftRecipient;
 use API\beans\Draft;
@@ -32,15 +32,14 @@ use API\connectors\SessionClient;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Test PHP Client API</title>
+		<title>Test PHP Client API - Registration methods</title>
 	</head>
 	<body>
 
 <?php
 
 include (__DIR__ . '/../API/connectors/SessionClient.php');
-include (__DIR__ . '/../API/connectors/ApplicationClient.php');
-include (__DIR__ . '/../API/connectors/LetterAttachmentClient.php');
+include (__DIR__ . '/../API/connectors/RegistrationClient.php');
 include (__DIR__ . '/../API/beans/AbstractBeans.php');
 include (__DIR__ . '/../API/beans/LetterDeliveryType.php');
 include (__DIR__ . '/../API/beans/Draft.php');
@@ -50,13 +49,12 @@ include (__DIR__ . '/../API/beans/DraftRecipient.php');
 try
 {
 	// INIT
-	$identifierOrEmail = "johannbrocail@enaco.fr";
-	$password = "63JGP5TU";
-	$letterSubject = "Hello PHP";
-	$recipientEmail = "admin@enaco.fr";
+	$identifierOrEmail = 'johannbrocail@enaco.fr';
+	$password = '63JGP5TU';
 	
-	$text = "Have a good day PHP!!";
-	$attachmentFile = "example.pdf";
+	$emailRegistration = 'johannbrocail2@enaco.fr';
+	$identifierRegistration = 'johann.brocail';
+	
 	
 	// Enable or disable HTTP trace
 	SessionClient::$debug = true;
@@ -64,52 +62,10 @@ try
 	// Create new session
 	$SessionClient = new SessionClient($identifierOrEmail, $password);
 	
-	// Create new application connector
-	$ApplicationClient = new ApplicationClient($SessionClient);
+	// Create new registration connector
+	$RegistrationClient = new RegistrationClient($SessionClient);
 	
-	// Recovery of different types of letter available
-	$LetterDeliveryTypes = $ApplicationClient->getDeliveryAndLetterTypes();
-	
-	// Create new draft
-	$Draft = new Draft($ApplicationClient);
-	
-	foreach($LetterDeliveryTypes['letterDeliveryTypes'] as $letterDeliveryType)
-	{
-		if($letterDeliveryType['code'] == LetterDeliveryType::$CERTIFIED_LETTER_CODE)
-		{
-			$LetterDeliveryType = new LetterDeliveryType($ApplicationClient, $letterDeliveryType['_id']);
-			// Assignment to draft the type of letter
-			$Draft->setLetterDeliveryType($LetterDeliveryType);
-		}
-	}
-	
-	// Set the title
-	$Draft->setTitle($letterSubject);
-	// Set the content
-	$Draft->setText($text);
-	
-	// Create new recipient
-	$Recipient = new DraftRecipient();
-	// Set the e-mail
-	$Recipient->setEmailAddress($recipientEmail);
-	// Assignment to draft the recipient
-	$Draft->addRecipient($Recipient);
-	
-	if(!empty($attachmentFile))
-	{
-		// Create new Attachment
-		$DraftAttachment = new DraftAttachment($ApplicationClient);
-		// Set filename
-		$DraftAttachment->setFilename($attachmentFile);
-		// Assignment to draft the attachment
-		$Draft->addAttachment($DraftAttachment);
-	}
-	
-	// Save the draft
-	$ApplicationClient->setLetter($Draft);
-	// Send the draft
-	$ApplicationClient->sendLetter($Draft);
-	
+	$RegistrationClient->checkRemoteParams($emailRegistration, $identifierRegistration);
 	// Close session
 	$SessionClient->closeSession();
 

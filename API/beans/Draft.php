@@ -207,31 +207,4 @@ class Draft extends AbstractBeans
 		$Attachment->setIndex($this->attachmentList->count());
 	}
 	
-	public function getAttachmentByFilename($attachmentFilename)
-	{
-		//		for (DraftAttachment attachment : attachmentList) {
-	//			if (attachment.getFilename().equals(attachmentFilename)) {
-	//				return attachment;
-	//			}
-	//		}
-	}
-	
-	
-	public function send($toArchive = false)
-	{
-		$this->letterId = $this->getApplicationClient()->setLetter($this);
-		
-		if(count($this->attachmentList))
-		{
-			$attachmentClient = new LetterAttachmentClient();
-			$attachmentClient->application = $this->getApplicationClient();
-			
-			foreach($this->attachmentList as $k => $Attachment)
-			{
-				$attachmentClient->uploadAttachment($this->letterId, $Attachment);
-			}
-		}
-		
-		$this->getApplicationClient()->sendLetterRemote($this->letterId, $toArchive);
-	}
 }
