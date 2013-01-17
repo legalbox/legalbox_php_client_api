@@ -325,7 +325,6 @@ class ApplicationClient
 	
 	/**
 	 * Création d'un nouveau contact pour l'utilisateur de la session.
-	 * @todo Bean User, and Beans ContactAttributes
 	 */
 	public function createContact()
 	{
@@ -333,14 +332,128 @@ class ApplicationClient
 	}
 	
 	/**
-	 * Modification du contact
+	 * Modification du contact.
 	 */
 	public function updateContact()
 	{
 		
 	}
 	
+	/**
+	 * Supprime un contact.
+	 */
+	public function deleteContact()
+	{
+		
+	}
 	
+	/**
+	 * Imporation d'un ou plusieurs contacts.
+	 * Si l'identifiant de l'utilisateur à rajouter aux contacts est vien celui d'un utilisateur valide 
+	 * et qu'il ne s'agit pas d'un contact déjà enregistré ou de soi-même.
+	 * Pour chaque contact à importer, un nouveau contact est enregistrer pour l'utilisateur de la session.
+	 */
+	public function importMultipleContacts()
+	{
+		
+	}
+	
+	/**
+	 * Inviter qu'lqu'un via son e-mail
+	 * @param String $email Email de la personne que l'on veut inviter à s'inscrire au sevice LegalBox
+	 * @param Boolean $isMyVisitingCardShared True si je veux rendre visible ma carte de visite pour ce futur contact
+	 * @param Integer $languageId Id en BDD de la langue
+	 */
+	public function sendInvitation($email, $isMyVisitingCardShared, $languageId)
+	{
+		$datas = array(
+			'email' => $email,
+			'isMyVisitingCardShared' => $isMyVisitingCardShared,
+			'languageId' => $languageId
+		);
+
+		return $this->execute('sendInvitation', $datas);
+	}
+	
+	/**
+	 * Envoie d'une notification par email à la personne concernée et mise à jour de la date d'invitation.
+	 * Si la personne notifiée s'inscrit au service LegalBox, cette invitation sera supprimée et un nouveau contact sera créé.
+	 * @param $pendingInvitationId Id en BDD de l'invitation
+	 * @param $isMyVisitingCardShared True si je veux rendre visible ma carte de visite pour ce futur contact
+	 * @param $languageId Id en BDD de la langue
+	 * @param String $customMessage Message personnalisé qui sera ajouté dans la notification envoyée
+	 */
+	public function sendInvitationAgain($pendingInvitationId, $isMyVisitingCardShared, $languageId, $customMessage)
+	{
+		$datas = array(
+			'pendingInvitationId' => $pendingInvitationId,
+			'isMyVisitingCardShared' => $isMyVisitingCardShared,
+			'languageId' => $languageId, 
+			'customMessage' => $customMessage
+		);
+
+		return $this->execute('sendInvitationAgain', $datas);
+	}
+	
+	/**
+	 * Mettre à jour une invitation
+	 * @param $pendingInvitationId Id en BDD de l'invitation
+	 * @param $isMyVisitingCardShared True si je veux rendre visible ma carte de visite pour ce futur contact
+	 */
+	public function updatePendingInvitation($pendingInvitationId, $isMyVisitingCardShared)
+	{
+		$datas = array(
+			'pendingInvitationId' => $pendingInvitationId,
+			'isMyVisitingCardShared' => $isMyVisitingCardShared
+		);
+
+		return $this->execute('updatePendingInvitation', $datas);
+	}
+	
+	/**
+	 * Supprime une invitation
+	 * @param $pendingInvitationId Id en BDD de l'invitation
+	 */
+	public function deletePendingInvitation($pendingInvitationId)
+	{
+		$datas = array(
+			'pendingInvitationId' => $pendingInvitationId
+		);
+
+		return $this->execute('deletePendingInvitation', $datas);
+	}
+	
+	/**
+	 * Envoyer plusieurs invitations en même temps
+	 */
+	public function sendMultipleInvitations()
+	{
+		
+	}
+	
+	/**
+	 * Relancer plusieurs invitations en même temps
+	 */
+	public function sendMultipleInvitationsAgain()
+	{
+		
+	}
+	
+	/**
+	 * Supprimer plusieurs invitations en même temps
+	 */
+	public function deleteMultipleInvitation()
+	{
+		
+	}
+	
+	/**
+	 * Etablir la liste des contacts et des invitations en cours
+	 */
+	public function getContactAndPendingInvitationList()
+	{
+		
+	}
 	/**
 	 * Préparer un courrier / créer un brouillon.
 	 * @param Draft $Draft
@@ -401,6 +514,35 @@ class ApplicationClient
 		return $Draft->setLetterId($returnObj["letterId"]);
 	}
 	
+	/**
+	 * Récupérer l'identiiant d'attachement d'une pièce jointe
+	 */
+	public function getAttachmentIdFromIndexAndLetterId()
+	{
+		
+	}
+	
+	/**
+	 * Signer une pièce
+	 */
+	public function createAttachmentSignature()
+	{
+		
+	}
+	
+	/**
+	 * Récupérer un brouillon
+	 */
+	public function getDraftDetails()
+	{
+			
+	}
+	
+	/**
+	 * Envoyer un courrier
+	 * @param Draft $Draft Brouillon
+	 * @param Boolean $toArchive True pour demande l'archivage du courrier
+	 */
 	public function sendLetter(Draft $Draft, $toArchive = false)
 	{
 		$datas = array(
@@ -422,6 +564,40 @@ class ApplicationClient
 		return $this->execute('sendLetter', $datas);
 	}
 	
+	/**
+	 * Récupère la liste des courriers de l'utilisateur
+	 * @return Array
+	 */
+	public function getLetterList()
+	{
+		return $this->execute('getLetterList');
+	}
+	
+	/**
+	 * Récupère la liste des brouillons de l'utilisateur
+	 * @return Array
+	 */
+	public function getDraftList()
+	{
+		return $this->execute('getDraftList');
+	}
+	
+	/**
+	 * Récupère le contenu d'un courrier
+	 */
+	public function getLetterDetails()
+	{
+		
+	}
+	
+	/**
+	 * Accepter / refuser une LRE (Lettre Recommandée Electronique)
+	 */
+	public function decideLRE()
+	{
+		
+	}
+	
 	public function getContactAndPendingInvitationLists()
 	{
 		$datas = array( 
@@ -439,90 +615,5 @@ class ApplicationClient
 		);
 		
 		return $this->execute($datas);
-	}
-	
-	
-	public function createLetterRemote(Draft $Draft)
-	{
-		return $this->setLetterRemote($Draft, null);
-	}
-	
-	public function setLetterRemote(Draft $Draft, $letterId)
-	{
-		$datas = array();
-		$datas["letterId"] = $letterId;
-		$datas["letterDeliveryTypeId"] = $Draft->getLetterDeliveryType()->getId();
-		$datas["text"] = $Draft->getText();
-		$datas["title"] = $Draft->getTitle();
-		$datas["originLetterId"] = $Draft->getOriginLetterId();
-		
-		$recipientArray = array();
-		$recipientList = $Draft->getRecipientList();
-		
-		$nonSubscribedRecipient = array();
-		for($i = 0; $i < count($recipientList); $i++)
-		{
-			$recipient = $recipientList[$i];
-			
-			$response = $this->isEmailOrIdentifierRegistered($recipient->getEmailAddress());
-			
-			if($response["isRegistered"])
-			{
-				$userId = $response["userId"];
-			}
-			
-			if(empty($userId))
-			{
-				echo "<br/>set nonSubscribedRecipient";
-				$nonSubscribedRecipient["isProfessional"] = $recipient->isProfessional();
-				$nonSubscribedRecipient["prepayeResponse"] = $recipient->isPrepayedRecipient();
-				$nonSubscribedRecipient["emailAddress"] = $recipient->getEmailAddress();
-				$nonSubscribedRecipient["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
-				$nonSubscribedRecipient["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
-			}
-			else
-			{
-				echo "<br/>set recipientObject";
-				$recipientObject = array();
-				$recipientObject["userId"] = $userId;
-				$recipientObject["prepayeResponse"] = $recipient->isPrepayedRecipient();
-				$recipientObject["notificationLanguageCode"] = $recipient->getNotificationLanguageCode();
-				$recipientObject["isCC"] = $recipient->isCarbonCopyRecipient();
-				//				$recipientObject["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
-				array_push($recipientArray, $recipientObject);
-			}
-		
-		}
-	
-		$datas["recipientList"] = $recipientArray;
-		
-		if (!empty($nonSubscribedRecipient)) {
-			$datas["nonSubscribedRecipient"] = $nonSubscribedRecipient;
-		}
-		
-		//$datas["recipientList"] = $recipientArray;
-		//$datas["nonSubscribedRecipient"] = $nonSubscribedRecipient;
-		
-		$returnObj = $this->execute('setLetter', $datas);
-		return $returnObj["letterId"];
-	
-	}
-	
-	public function addAttachmentSignatureRemote($letterId, $attachmentIndex, $base64Signature)
-	{
-		$datas = array();
-		$datas['request'] = 'addAttachmentSignature';
-		$datas["letterId"] = $letterId;
-		$datas["index"] = $attachmentIndex;
-		$datas["base64Signature"] = $base64Signature;
-		$this->execute($datas);
-	}
-	
-	public function sendLetterRemote($letterId, $toArchive)
-	{
-		$datas = array();
-		$datas["letterId"] = $letterId;
-		$datas["toArchive"] = $toArchive;
-		$this->execute('sendLetter', $datas);
 	}
 }

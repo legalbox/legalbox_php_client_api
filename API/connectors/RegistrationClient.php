@@ -49,6 +49,9 @@ class RegistrationClient
 	
 	/**
 	 * Verifie que l'email et l'identifiant requis sont disponible et que l'email est bien formaté.
+	 * @param String $email E-mail à vérifier
+	 * @param String $identifier Identifiant à vérifier
+	 * @return Array
 	 */
 	public function checkRemoteParams($email, $identifier)
 	{
