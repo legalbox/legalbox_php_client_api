@@ -30,6 +30,24 @@ class User extends AbstractBeans
 {
 	protected $userId;
 	
+	protected $accountType;
+	
+	protected $firstName;
+	
+	protected $lastName;
+	
+	protected $userEmail;
+	
+	protected $identifier;
+	
+	protected $publicName;
+	
+	protected $languageCode;
+	
+	protected $isProfessional;
+	
+	protected $Address;
+
 	public function __construct(ApplicationClient $ApplicationClient, $userId = null)
 	{
 		parent::__construct($ApplicationClient);
@@ -43,4 +61,145 @@ class User extends AbstractBeans
 			//$this->getApplicationClient()->execute('getUserDetails', $datas);
 		}
 	}
+	
+	/**
+	 * @return the $userId
+	 */
+	public function getUserId() {
+		return $this->userId;
+	}
+	
+	/**
+	 * @return the $accountType
+	 */
+	public function getAccountType() {
+		return $this->accountType;
+	}
+	
+	/**
+	 * @return the $firstName
+	 */
+	public function getFirstName() {
+		return $this->firstName;
+	}
+	
+	/**
+	 * @return the $lastName
+	 */
+	public function getLastName() {
+		return $this->lastName;
+	}
+	
+	/**
+	 * @return the $userEmail
+	 */
+	public function getUserEmail() {
+		return $this->userEmail;
+	}
+	
+	/**
+	 * @return the $identifier
+	 */
+	public function getIdentifier() {
+		return $this->identifier;
+	}
+	
+	/**
+	 * @return the $publicName
+	 */
+	public function getPublicName() {
+		return $this->publicName;
+	}
+	
+	/**
+	 * @return the $languageCode
+	 */
+	public function getLanguageCode() {
+		return $this->languageCode;
+	}
+	
+	/**
+	 * @return the $Address
+	 */
+	public function getAddress() {
+		return $this->Address;
+	}
+	
+	/**
+	 * @param field_type $userId
+	 */
+	public function setUserId($userId) {
+		$this->userId = $userId;
+	}
+	
+	/**
+	 * @param field_type $accountType
+	 */
+	public function setAccountType($accountType) {
+		$this->accountType = $accountType;
+	}
+	
+	/**
+	 * @param field_type $firstName
+	 */
+	public function setFirstName($firstName) {
+		$this->firstName = $firstName;
+	}
+	
+	/**
+	 * @param field_type $lastName
+	 */
+	public function setLastName($lastName) {
+		$this->lastName = $lastName;
+	}
+	
+	/**
+	 * @param field_type $userEmail
+	 */
+	public function setUserEmail($userEmail) {
+		$this->userEmail = $userEmail;
+	}
+	
+	/**
+	 * @param field_type $identifier
+	 */
+	public function setIdentifier($identifier) {
+		$this->identifier = $identifier;
+	}
+	
+	/**
+	 * @param field_type $publicName
+	 */
+	public function setPublicName($publicName) {
+		$this->publicName = $publicName;
+	}
+	
+	/**
+	 * @param field_type $languageCode
+	 */
+	public function setLanguageCode($languageCode) {
+		$this->languageCode = $languageCode;
+	}
+	
+	/**
+	 * @return the $isProfessional
+	 */
+	public function getIsProfessional() {
+		return $this->isProfessional;
+	}
+	
+	/**
+	 * @param field_type $isProfessional
+	 */
+	public function setIsProfessional($isProfessional) {
+		$this->isProfessional = $isProfessional;
+	}
+	
+	/**
+	 * @param field_type $Address
+	 */
+	public function setAddress($Address) {
+		$this->Address = $Address;
+	}
+	
 }

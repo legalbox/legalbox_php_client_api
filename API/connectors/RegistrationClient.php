@@ -23,6 +23,8 @@
  */
 namespace API\connectors;
 
+use API\beans\User;
+
 class RegistrationClient
 {
 	const URL_REGISTRATION = 'https://mail.legalbox.com/restful/registration';
@@ -68,9 +70,23 @@ class RegistrationClient
 	 * Enregistre la demande d'inscription.
 	 * L'inscription sera définitive quand l'utilisateur aura choisi et validé son mot de passe personnel
 	 */
-	public function submitRegistrationForm()
+	public function submitRegistrationForm(User $User)
 	{
+		$datas = array(
+			'request' => 'submitRegistrationForm', 
+			'data' => array(
+				'accountType' => 'private',
+				'firstName' => 'firstName',
+				'lastName' => 'lastName',
+				'userEmail' => 'ooskinzoo@hotmail.com', 
+				'identifier' => 'identifier', 
+				'publicName' => 'publicName', 
+				'languageCode' => 'fr', 
+				''
+			)
+		);
 		
+		return $this->execute($datas);
 	}
 	
 	/**

@@ -40,11 +40,9 @@ use API\connectors\SessionClient;
 
 include (__DIR__ . '/../API/connectors/SessionClient.php');
 include (__DIR__ . '/../API/connectors/RegistrationClient.php');
+include (__DIR__ . '/../API/connectors/ApplicationClient.php');
 include (__DIR__ . '/../API/beans/AbstractBeans.php');
-include (__DIR__ . '/../API/beans/LetterDeliveryType.php');
-include (__DIR__ . '/../API/beans/Draft.php');
-include (__DIR__ . '/../API/beans/DraftAttachment.php');
-include (__DIR__ . '/../API/beans/DraftRecipient.php');
+include (__DIR__ . '/../API/beans/User.php');
 
 try
 {
@@ -54,7 +52,10 @@ try
 	
 	$emailRegistration = 'johannbrocail2@enaco.fr';
 	$identifierRegistration = 'johann.brocail';
+	$firstNameRegistration = 'firstNameRegistration';
+	$lastNameRegistration = 'lastNameRegistration';
 	
+	$address1Registration = '165 Av. de Bretagne';
 	
 	// Enable or disable HTTP trace
 	SessionClient::$debug = true;
@@ -65,7 +66,38 @@ try
 	// Create new registration connector
 	$RegistrationClient = new RegistrationClient($SessionClient);
 	
-	$RegistrationClient->checkRemoteParams($emailRegistration, $identifierRegistration);
+	// Create new application connector
+	$ApplicationClient = new ApplicationClient($SessionClient);
+	
+	$checkRemoteParams = $RegistrationClient->checkRemoteParams($emailRegistration, $identifierRegistration);
+	
+	if($checkRemoteParams['isEmailValid'] && $checkRemoteParams['isEmailUnregistered'] &&  $checkRemoteParams['isIdentifierAvailable'])
+	{
+		// Create new empty user
+		$User = new User($ApplicationClient);
+		
+		// Set identifier
+		$User->setIdentifier($identifierRegistration);
+		
+		// Set email
+		$User->setEmail($emailRegistration);
+		
+		// Set isProfessional false
+		$User->setIsProfessional(false);
+		
+		// Set firstName
+		$User->setFirstName($firstNameRegistration);
+		
+		// Set lastName
+		$User->setLastName($lastNameRegistration);
+		
+		
+		// Create new empty address
+		$Address = new Address($ApplicationClient);
+		
+		$Address->setAddress1($address1Registration);
+	}
+	
 	// Close session
 	$SessionClient->closeSession();
 
