@@ -53,9 +53,9 @@ try
 	$identifierOrEmail = "johannbrocail@enaco.fr";
 	$password = "63JGP5TU";
 	$letterSubject = "Hello PHP";
-	$recipientEmail = "admin@enaco.fr";
+	$recipientEmail = "ooskinzoo@hotmail.com";
 	
-	$text = "Have a good day PHP!!";
+	$text = "<b>test</b>";
 	$attachmentFile = "example.pdf";
 	
 	// Enable or disable HTTP trace

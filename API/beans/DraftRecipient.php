@@ -33,7 +33,12 @@ class DraftRecipient
 	protected $notificationLanguageCode;
 	protected $isCarbonCopyRecipient = false;
 	protected $isPrepayedRecipient = false;
-	protected $signatureRequestList = array(); 
+	protected $signatureRequestList; 
+	
+	public function __construct()
+	{
+		$this->signatureRequestList = new \ArrayIterator();	
+	}
 	
 	public function getEmailAddress() {
 		return $this->emailAddress;
@@ -79,9 +84,18 @@ class DraftRecipient
 		$this->isPrepayedRecipient = $isPrepayedRecipient;
 	}
 	
-	public function addSignatureRequest($attachment) {
-		return array_push($this->signatureRequestList, $attachment);
+	public function addSignatureRequest(DraftAttachment $Attachment) {
+		return $this->signatureRequestList->append($Attachment);
 	}
 	
-
+	public function getSignatureRequestIndexArray() {
+		if ($this->signatureRequestList->count() == 0) {
+			return;
+		}
+		$indexArray = array();
+		foreach($this->signatureRequestList as $k => $Attachment) {
+			array_push($indexArray, $Attachment.getIndex());
+		}
+		return $indexArray;
+	}
 }

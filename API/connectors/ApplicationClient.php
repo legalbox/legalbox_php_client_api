@@ -498,7 +498,7 @@ class ApplicationClient
 				$recipientObject["prepayeResponse"] = $Recipient->isPrepayedRecipient();
 				$recipientObject["notificationLanguageCode"] = $Recipient->getNotificationLanguageCode();
 				$recipientObject["isCC"] = $Recipient->isCarbonCopyRecipient();
-				//$recipientObject["attachmentSignatureRequestList"] = $recipient->getSignatureRequestIndexArray();
+				$recipientObject["attachmentSignatureRequestList"] = $Recipient->getSignatureRequestIndexArray();
 				array_push($recipientArray, $recipientObject);
 			}
 		
