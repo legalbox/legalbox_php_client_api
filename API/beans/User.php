@@ -198,7 +198,7 @@ class User extends AbstractBeans
 	/**
 	 * @param field_type $Address
 	 */
-	public function setAddress($Address) {
+	public function setAddress(Address $Address) {
 		$this->Address = $Address;
 	}
 	

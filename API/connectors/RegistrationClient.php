@@ -76,13 +76,27 @@ class RegistrationClient
 			'request' => 'submitRegistrationForm', 
 			'data' => array(
 				'accountType' => 'private',
-				'firstName' => 'firstName',
-				'lastName' => 'lastName',
-				'userEmail' => 'ooskinzoo@hotmail.com', 
-				'identifier' => 'identifier', 
-				'publicName' => 'publicName', 
-				'languageCode' => 'fr', 
-				''
+				'firstName' => $User->getFirstName(),
+				'lastName' => $User->getLastName(),
+				'userEmail' => $User->getUserEmail(), 
+				'identifier' => $User->getIdentifier(), 
+				'publicName' => $User->getPublicName(), 
+				'languageCode' => $User->getLanguageCode(), 
+				'address' => array(
+					'address1' => $User->getAddress()->getAddress1(),
+					'zipCode' => $User->getAddress()->getZipCode(),
+					'town' => $User->getAddress()->getTown(),
+					'countryId' => $User->getAddress()->getCountryCode()		
+				),
+				'phone' => '',
+				'compagnyName' => '',
+				'tradeName' => '', 
+				'identificationNumber' => '',
+				'position' => '', 
+				'unit' => '',
+				'department' => '', 
+				'website' => '', 
+				'organizationTypeSelect' => ''
 			)
 		);
 		

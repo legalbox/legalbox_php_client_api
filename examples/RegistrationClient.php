@@ -22,10 +22,8 @@
  * @author Johann Brocail <johannbrocail@enaco.fr>
  */
 use API\connectors\RegistrationClient;
-use API\beans\DraftAttachment;
-use API\beans\DraftRecipient;
-use API\beans\Draft;
-use API\beans\LetterDeliveryType;
+use API\beans\User;
+use API\beans\Address;
 use API\connectors\ApplicationClient;
 use API\connectors\SessionClient;
 ?>
@@ -43,6 +41,7 @@ include (__DIR__ . '/../API/connectors/RegistrationClient.php');
 include (__DIR__ . '/../API/connectors/ApplicationClient.php');
 include (__DIR__ . '/../API/beans/AbstractBeans.php');
 include (__DIR__ . '/../API/beans/User.php');
+include (__DIR__ . '/../API/beans/Address.php');
 
 try
 {
@@ -50,12 +49,17 @@ try
 	$identifierOrEmail = 'johannbrocail@enaco.fr';
 	$password = '63JGP5TU';
 	
-	$emailRegistration = 'johannbrocail2@enaco.fr';
-	$identifierRegistration = 'johann.brocail';
-	$firstNameRegistration = 'firstNameRegistration';
-	$lastNameRegistration = 'lastNameRegistration';
+	$userEmailRegistration = 'ooskinzoo@hotmail.com';
+	$identifierRegistration = 'johann.brocail.perso';
+	$firstNameRegistration = 'Johann';
+	$lastNameRegistration = 'Brocail';
+	$publicNameRegistration = 'Brocail Johann';
 	
 	$address1Registration = '165 Av. de Bretagne';
+	$countryCodeRegistration = 'FR';
+	$languageCodeRegistration = 'FR';
+	$zipCodeRegistration = '59000';
+	$townRegistration = 'Lille';
 	
 	// Enable or disable HTTP trace
 	SessionClient::$debug = true;
@@ -69,7 +73,9 @@ try
 	// Create new application connector
 	$ApplicationClient = new ApplicationClient($SessionClient);
 	
-	$checkRemoteParams = $RegistrationClient->checkRemoteParams($emailRegistration, $identifierRegistration);
+	//$ApplicationClient->getCountryList();
+	
+	$checkRemoteParams = $RegistrationClient->checkRemoteParams($userEmailRegistration, $identifierRegistration);
 	
 	if($checkRemoteParams['isEmailValid'] && $checkRemoteParams['isEmailUnregistered'] &&  $checkRemoteParams['isIdentifierAvailable'])
 	{
@@ -80,7 +86,7 @@ try
 		$User->setIdentifier($identifierRegistration);
 		
 		// Set email
-		$User->setEmail($emailRegistration);
+		$User->setUserEmail($userEmailRegistration);
 		
 		// Set isProfessional false
 		$User->setIsProfessional(false);
@@ -90,12 +96,34 @@ try
 		
 		// Set lastName
 		$User->setLastName($lastNameRegistration);
+
+		// Set publicName
+		$User->setPublicName($publicNameRegistration);
+		
+		// Set languageCode
+		$User->setLanguageCode($languageCodeRegistration);
 		
 		
 		// Create new empty address
 		$Address = new Address($ApplicationClient);
 		
+		// Set adress1
 		$Address->setAddress1($address1Registration);
+		
+		// Set countryCode
+		$Address->setCountryCode($countryCodeRegistration);
+		
+		// Set zipCode
+		$Address->setZipCode($zipCodeRegistration);
+		
+		// Set town
+		$Address->setTown($townRegistration);
+		
+		// Assignment to user the address
+		$User->setAddress($Address);
+		
+		// Submit registration form
+		$RegistrationClient->submitRegistrationForm($User);
 	}
 	
 	// Close session
