@@ -86,7 +86,7 @@ class RegistrationClient
 					'address1' => $User->getAddress()->getAddress1(),
 					'zipCode' => $User->getAddress()->getZipCode(),
 					'town' => $User->getAddress()->getTown(),
-					'countryId' => $User->getAddress()->getCountryCode()		
+					'countryCode' => $User->getAddress()->getCountryCode()		
 				),
 				'phone' => '',
 				'companyName' => '',
