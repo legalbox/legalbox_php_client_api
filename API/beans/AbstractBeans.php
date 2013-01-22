@@ -35,6 +35,20 @@ abstract class AbstractBeans
 		$this->ApplicationClient = $ApplicationClient;
 	}
 	
+	public function toArray()
+	{
+		$toArray = array();
+		
+		$refClass = new \ReflectionClass($this);
+		
+		foreach($refClass->getProperties() as $property)
+		{
+			$toArray[$property->getName()] = call_user_func(array($this, sprintf('get%s', ucfirst($property->getName()))));
+		}
+
+		return $toArray;
+	}
+	
 	/**
 	 * @return the $ApplicationClient
 	 */

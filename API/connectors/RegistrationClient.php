@@ -82,12 +82,7 @@ class RegistrationClient
 				'identifier' => $User->getIdentifier(), 
 				'publicName' => $User->getPublicName(), 
 				'languageCode' => $User->getLanguageCode(), 
-				'address' => array(
-					'address1' => $User->getAddress()->getAddress1(),
-					'zipCode' => $User->getAddress()->getZipCode(),
-					'town' => $User->getAddress()->getTown(),
-					'countryId' => $User->getAddress()->getCountryCode()		
-				),
+				'address' => $User->getAddress()->toArray(),
 				'phone' => '',
 				'compagnyName' => '',
 				'tradeName' => '', 

@@ -32,11 +32,20 @@ class Address extends AbstractBeans
 	
 	protected $address1;
 	
+	protected $address2;
+	
+	protected $address3;
+	
 	protected $countryCode;
 	
 	protected $zipCode;
 	
 	protected $town;
+	
+	protected $cedex;
+	
+	protected $stateProvince;
+	
 	
 	public function __construct(ApplicationClient $ApplicationClient, $addressId = null)
 	{
@@ -121,5 +130,62 @@ class Address extends AbstractBeans
 	public function setTown($town) {
 		$this->town = $town;
 	}
+	
+	/**
+	 * @return the $address2
+	 */
+	public function getAddress2() {
+		return $this->address2;
+	}
+	
+	/**
+	 * @return the $address3
+	 */
+	public function getAddress3() {
+		return $this->address3;
+	}
+	
+	/**
+	 * @return the $cedex
+	 */
+	public function getCedex() {
+		return $this->cedex;
+	}
+	
+	/**
+	 * @return the $stateProvince
+	 */
+	public function getStateProvince() {
+		return $this->stateProvince;
+	}
+	
+	/**
+	 * @param field_type $address2
+	 */
+	public function setAddress2($address2) {
+		$this->address2 = $address2;
+	}
+	
+	/**
+	 * @param field_type $address3
+	 */
+	public function setAddress3($address3) {
+		$this->address3 = $address3;
+	}
+	
+	/**
+	 * @param field_type $cedex
+	 */
+	public function setCedex($cedex) {
+		$this->cedex = $cedex;
+	}
+	
+	/**
+	 * @param field_type $stateProvince
+	 */
+	public function setStateProvince($stateProvince) {
+		$this->stateProvince = $stateProvince;
+	}
+	
 
 }
