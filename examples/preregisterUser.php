@@ -56,7 +56,7 @@ try
 	$publicNameRegistration = 'Brocail Johann';
 	
 	$address1Registration = '165 Av. de Bretagne';
-	$countryCodeRegistration = 'fr';
+	$countryCodeRegistration = 'FR';
 	$languageCodeRegistration = 'fr';
 	$zipCodeRegistration = '59000';
 	$townRegistration = 'Lille';
