@@ -1,4 +1,6 @@
 <?php
+use API\connectors\UserGroupBackofficeClient;
+
 /*
  * This file is part of LegalBox PHP Client API.
  *
@@ -39,6 +41,7 @@ use API\connectors\SessionClient;
 include (__DIR__ . '/../API/connectors/SessionClient.php');
 include (__DIR__ . '/../API/connectors/RegistrationClient.php');
 include (__DIR__ . '/../API/connectors/ApplicationClient.php');
+include (__DIR__ . '/../API/connectors/UserGroupBackofficeClient.php');
 include (__DIR__ . '/../API/beans/AbstractBeans.php');
 include (__DIR__ . '/../API/beans/User.php');
 include (__DIR__ . '/../API/beans/Address.php');
@@ -56,7 +59,7 @@ try
 	$publicNameRegistration = 'Brocail Johann';
 	
 	$address1Registration = '165 Av. de Bretagne';
-	$countryCodeRegistration = 'FR';
+	$countryCodeRegistration = 'fr';
 	$languageCodeRegistration = 'fr';
 	$zipCodeRegistration = '59000';
 	$townRegistration = 'Lille';
@@ -65,69 +68,62 @@ try
 	SessionClient::$debug = true;
 	
 	// Create new session
-	$SessionClient = new SessionClient($identifierOrEmail, $password);
-	
+	$sessionClient = new SessionClient($identifierOrEmail, $password);
+
 	// Create new registration connector
-	$RegistrationClient = new RegistrationClient($SessionClient);
+	$registrationClient = new RegistrationClient($sessionClient);
 	
 	// Create new application connector
-	$ApplicationClient = new ApplicationClient($SessionClient);
+	$applicationClient = new ApplicationClient($sessionClient);
 	
-	//$ApplicationClient->getCountryList();
+	// Create new user group connector
+	$userGroupBackofficeClient = new UserGroupBackofficeClient($sessionClient);
 	
-	$checkRemoteParams = $RegistrationClient->checkRemoteParams($userEmailRegistration, $identifierRegistration);
+	//$applicationClient->getCountryList();
 	
-	if($checkRemoteParams['isEmailValid'] && $checkRemoteParams['isEmailUnregistered'] &&  $checkRemoteParams['isIdentifierAvailable'])
+	$checkRemoteParams = $registrationClient->checkRemoteParams($userEmailRegistration, $identifierRegistration);
+	
+	if($checkRemoteParams['isEmailValid']
+	&& $checkRemoteParams['isEmailUnregistered'] 
+	&& $checkRemoteParams['isIdentifierAvailable'])
 	{
-		// Create new empty user
-		$User = new User($ApplicationClient);
+		// Create user
+		$user = new User($applicationClient);
+		$user->setIdentifier($identifierRegistration);
+		$user->setUserEmail($userEmailRegistration);
+		$user->setIsProfessional(false);
+		$user->setFirstName($firstNameRegistration);
+		$user->setLastName($lastNameRegistration);
+		$user->setPublicName($publicNameRegistration);
+		$user->setLanguageCode($languageCodeRegistration);
+		$user->setSponsorId($sessionClient->userId);
 		
-		// Set identifier
-		$User->setIdentifier($identifierRegistration);
-		
-		// Set email
-		$User->setUserEmail($userEmailRegistration);
-		
-		// Set isProfessional false
-		$User->setIsProfessional(false);
-		
-		// Set firstName
-		$User->setFirstName($firstNameRegistration);
-		
-		// Set lastName
-		$User->setLastName($lastNameRegistration);
-
-		// Set publicName
-		$User->setPublicName($publicNameRegistration);
-		
-		// Set languageCode
-		$User->setLanguageCode($languageCodeRegistration);
-		
-		
-		// Create new empty address
-		$Address = new Address($ApplicationClient);
-		
-		// Set adress1
-		$Address->setAddress1($address1Registration);
-		
-		// Set countryCode
-		$Address->setCountryCode($countryCodeRegistration);
-		
-		// Set zipCode
-		$Address->setZipCode($zipCodeRegistration);
-		
-		// Set town
-		$Address->setTown($townRegistration);
+		// Create address
+		$address = new Address($applicationClient);
+		$address->setAddress1($address1Registration);
+		$address->setCountryCode($countryCodeRegistration);
+		$address->setZipCode($zipCodeRegistration);
+		$address->setTown($townRegistration);
 		
 		// Assignment to user the address
-		$User->setAddress($Address);
+		$user->setAddress($address);
 		
 		// Submit registration form
-		$RegistrationClient->submitRegistrationForm($User);
+		$registrationClient->submitRegistrationForm($user);
+		
+		
+		// false: registration step 1 
+		// true: registration step 2 
+		$validatePreregisteredInformationByUser = true;
+		
+		$userGroupBackofficeClient->sendEmailAddressVerificationEmail(
+			$validatePreregisteredInformationByUser, 
+			$languageCodeRegistration, 
+			$userEmailRegistration);
 	}
 	
 	// Close session
-	$SessionClient->closeSession();
+	$sessionClient->closeSession();
 
 }
 catch (HttpException $ex)

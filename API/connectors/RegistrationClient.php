@@ -70,23 +70,24 @@ class RegistrationClient
 	 * Enregistre la demande d'inscription.
 	 * L'inscription sera définitive quand l'utilisateur aura choisi et validé son mot de passe personnel
 	 */
-	public function submitRegistrationForm(User $User)
+	public function submitRegistrationForm(User $user)
 	{
 		$datas = array(
 			'request' => 'submitRegistrationForm', 
 			'data' => array(
 				'accountType' => 'private',
-				'firstName' => $User->getFirstName(),
-				'lastName' => $User->getLastName(),
-				'userEmail' => $User->getUserEmail(), 
-				'identifier' => $User->getIdentifier(), 
-				'publicName' => $User->getPublicName(), 
-				'languageCode' => $User->getLanguageCode(), 
+				'firstName' => $user->getFirstName(),
+				'lastName' => $user->getLastName(),
+				'userEmail' => $user->getUserEmail(), 
+				'identifier' => $user->getIdentifier(), 
+				'publicName' => $user->getPublicName(), 
+				'languageCode' => $user->getLanguageCode(), 
+				'sponsorId' => $user->getSponsorId(),
 				'address' => array(
-					'address1' => $User->getAddress()->getAddress1(),
-					'zipCode' => $User->getAddress()->getZipCode(),
-					'town' => $User->getAddress()->getTown(),
-					'countryCode' => $User->getAddress()->getCountryCode()		
+					'address1' => $user->getAddress()->getAddress1(),
+					'zipCode' => $user->getAddress()->getZipCode(),
+					'town' => $user->getAddress()->getTown(),
+					'countryCode' => $user->getAddress()->getCountryCode()		
 				),
 				'phone' => '',
 				'companyName' => '',
@@ -106,9 +107,19 @@ class RegistrationClient
 	/**
 	 * Envoie une notification à l'email spécifié afin de valider la propriété de ce mail.
 	 */
-	public function sendEmailAddressVerificationEmail()
+	public function sendEmailAddressVerificationEmail(
+			$languageCode,
+			$identifierOrEmail)
 	{
-		
+		$datas = array(
+			'request' => 'sendEmailAddressVerificationEmail',
+			'data' => array(
+				'languageCode' => $languageCode,
+				'identifierOrEmail' => $identifierOrEmail
+			)
+		);	
+			
+		return $this->execute($datas);
 	}
 	
 	/**

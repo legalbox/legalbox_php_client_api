@@ -109,5 +109,22 @@ class UserGroupBackofficeClient
 		
 	}
 	
-
+	/**
+	 * Envoie une notification à l'email spécifié afin de valider la propriété de ce mail.
+	 */
+	public function sendEmailAddressVerificationEmail(
+			$validatePreregisteredInformationByUser,
+			$languageCode,
+			$identifierOrEmail)
+	{
+		$datas = array(
+				'validatePreregisteredInformationByUser' => $validatePreregisteredInformationByUser,
+				'languageCode' => $languageCode,
+				'identifierOrEmail' => $identifierOrEmail
+		);
+		
+		return $this->execute('sendEmailAddressVerificationEmail', $datas);
+		
+	}
+	
 }

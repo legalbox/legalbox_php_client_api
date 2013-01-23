@@ -29,24 +29,16 @@ use API\connectors\ApplicationClient;
 class User extends AbstractBeans
 {
 	protected $userId;
-	
 	protected $accountType;
-	
 	protected $firstName;
-	
 	protected $lastName;
-	
 	protected $userEmail;
-	
 	protected $identifier;
-	
 	protected $publicName;
-	
 	protected $languageCode;
-	
 	protected $isProfessional;
-	
-	protected $Address;
+	protected $sponsorId;
+	protected $address;
 
 	public function __construct(ApplicationClient $ApplicationClient, $userId = null)
 	{
@@ -117,12 +109,20 @@ class User extends AbstractBeans
 	public function getLanguageCode() {
 		return $this->languageCode;
 	}
+
+	/**
+	 * @return the $languageCode
+	 */
+	public function getSponsorId() {
+		return $this->sponsorId;
+	}
+	
 	
 	/**
-	 * @return the $Address
+	 * @return the $address
 	 */
 	public function getAddress() {
-		return $this->Address;
+		return $this->address;
 	}
 	
 	/**
@@ -196,10 +196,17 @@ class User extends AbstractBeans
 	}
 	
 	/**
-	 * @param field_type $Address
+	 * @param field_type $isProfessional
 	 */
-	public function setAddress(Address $Address) {
-		$this->Address = $Address;
+	public function setSponsorId($sponsorId) {
+		$this->sponsorId = $sponsorId;
+	}
+	
+	/**
+	 * @param field_type $address
+	 */
+	public function setAddress(Address $address) {
+		$this->address = $address;
 	}
 	
 }
