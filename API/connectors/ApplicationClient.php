@@ -542,12 +542,14 @@ class ApplicationClient
 	 * Envoyer un courrier
 	 * @param Draft $Draft Brouillon
 	 * @param Boolean $toArchive True pour demande l'archivage du courrier
+	 * @param Boolean $notifyByEmail True to send a notification by email
 	 */
-	public function sendLetter(Draft $Draft, $toArchive = false)
+	public function sendLetter(Draft $Draft, $toArchive = false, $notifyByEmail = true)
 	{
 		$datas = array(
 			'letterId' => $Draft->getLetterId(),
-			'toArchive' => $toArchive
+			'toArchive' => $toArchive,
+			'notifyByEmail' => $notifyByEmail
 		);
 
 		if(count($Draft->getAttachmentList()))
