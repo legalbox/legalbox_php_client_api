@@ -68,12 +68,12 @@ try
 	$ApplicationClient = new ApplicationClient($SessionClient);
 	
 	// Recovery of different types of letter available
-	$LetterDeliveryTypes = $ApplicationClient->getDeliveryAndLetterTypes();
+	$LetterDeliveryTypes = $ApplicationClient->getLetterDeliveryTypes()['letterDeliveryTypes'];
 	
 	// Create new draft
 	$Draft = new Draft($ApplicationClient);
 	
-	foreach($LetterDeliveryTypes['letterDeliveryTypes'] as $letterDeliveryType)
+	foreach($LetterDeliveryTypes as $letterDeliveryType)
 	{
 		if($letterDeliveryType['code'] == LetterDeliveryType::$CERTIFIED_LETTER_CODE)
 		{

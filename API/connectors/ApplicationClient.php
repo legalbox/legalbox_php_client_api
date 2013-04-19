@@ -226,7 +226,7 @@ class ApplicationClient
 	 * @param String $languageCode Code de la langue
 	 * @return Array
 	 */
-	public function getDeliveryAndLetterTypes($languageCode = null)
+	public function getLetterDeliveryTypes($languageCode = null)
 	{
 		$datas = array();
 		
@@ -239,7 +239,7 @@ class ApplicationClient
 			$datas['languageCode'] = $this->_SessionClient->languageCode;
 		}
 		
-		return $this->execute('getDeliveryAndLetterTypes', $datas);
+		return $this->execute('getLetterDeliveryTypes', $datas);
 	}
 	
 	/**
