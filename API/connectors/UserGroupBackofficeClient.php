@@ -36,14 +36,14 @@ class UserGroupBackofficeClient
 	
 	public function execute($request, $data = array())
 	{
+		//$data['languageCode'] = $this->_SessionClient->languageCode;
 		$datas = array();
 		
 		$datas['request'] = $request;
 		$datas['data'] = $data;
 		$datas['sessionId'] = $this->_SessionClient->sessionId;
 		$datas['userId'] = $this->_SessionClient->userId;
-		
-		
+
 		$response = $this->_SessionClient->execute(self::URL_BACKOFFICE, $datas);
 		
 		if($response['error'])
@@ -104,9 +104,10 @@ class UserGroupBackofficeClient
 	 * Ajout de l'utilisateur créé dans le groupe
 	 * @return Array
 	 */
-	public function createNewUserInGroup()
+	public function createNewUserInGroup($data)
 	{
-		
+		$data['generatePassword'] = true;
+		return $this->execute('createNewUserInGroup', $data);
 	}
 	
 	/**
