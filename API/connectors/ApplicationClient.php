@@ -587,9 +587,13 @@ class ApplicationClient
 	/**
 	 * Récupère le contenu d'un courrier
 	 */
-	public function getLetterDetails()
+	public function getLetterDetails($actorId)
 	{
-		
+		$datas = array(
+            'actorId' => $actorId
+        );
+
+        return $this->execute('getLetterDetails', $datas);
 	}
 	
 	/**
