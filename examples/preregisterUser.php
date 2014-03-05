@@ -49,16 +49,16 @@ include (__DIR__ . '/../API/beans/Address.php');
 try
 {
 	// INIT
-	$identifierOrEmail = 'johannbrocail@enaco.fr';
-	$password = '63JGP5TU';
+	$identifierOrEmail = 'your@account.com';
+	$password = 'YourPassword';
 	
-	$userEmailRegistration = 'ooskinzoo@hotmail.com';
-	$identifierRegistration = 'johann.brocail.perso';
-	$firstNameRegistration = 'Johann';
-	$lastNameRegistration = 'Brocail';
-	$publicNameRegistration = 'Brocail Johann';
+	$userEmailRegistration = 'email@registration.com';
+	$identifierRegistration = 'identifier.registration';
+	$firstNameRegistration = 'Firstname';
+	$lastNameRegistration = 'Lastname';
+	$publicNameRegistration = 'Public name';
 	
-	$address1Registration = '165 Av. de Bretagne';
+	$address1Registration = 'Your address';
 	$countryCodeRegistration = 'fr';
 	$languageCodeRegistration = 'fr';
 	$zipCodeRegistration = '59000';
