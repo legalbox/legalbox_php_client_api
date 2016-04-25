@@ -25,7 +25,7 @@ namespace API\connectors;
 
 class UserGroupBackofficeClient
 {
-	const URL_BACKOFFICE = 'https://mail.legalbox.com/restful/userGroupBackoffice';
+	const URL_BACKOFFICE = 'https://certified.legalbox.com/restful/userGroupBackoffice';
 	
 	private $_SessionClient;
 
