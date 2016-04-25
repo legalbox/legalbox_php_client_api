@@ -27,7 +27,7 @@ use API\beans\User;
 
 class RegistrationClient
 {
-	const URL_REGISTRATION = 'https://mail.legalbox.com/restful/registration';
+	const URL_REGISTRATION = 'https://certified.legalbox.com/restful/registration';
 	
 	private $_SessionClient;
 
