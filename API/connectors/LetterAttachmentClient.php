@@ -31,8 +31,8 @@ use API\beans\DraftAttachment;
 
 class LetterAttachmentClient
 {
-	const URL_UPLOAD = 'https://mail.legalbox.com/restful/fileUpload';
-	const URL_DOWNLOAD = 'https://mail.legalbox.com/restful/fileDownload';
+	const URL_UPLOAD = 'https://certified.legalbox.com/restful/fileUpload';
+	const URL_DOWNLOAD = 'https://certified.legalbox.com/restful/fileDownload';
 	
 	private $_SessionClient;
 
