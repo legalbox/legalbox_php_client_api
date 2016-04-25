@@ -30,7 +30,7 @@ use API\APIResourcesManager;
 
 class ApplicationClient
 {
-	const URL_APPLICATION = 'https://mail.legalbox.com/restful/application';
+	const URL_APPLICATION = 'https://certified.legalbox.com/restful/application';
 	
 	private $_SessionClient;
 	private $_FactoryBeans;
