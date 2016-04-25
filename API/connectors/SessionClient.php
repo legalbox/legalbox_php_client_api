@@ -29,10 +29,10 @@ use API\connectors\ApplicationClient;
 
 class SessionClient
 {
-	const URL_SESSION = 'https://mail.legalbox.com/restful/session';
-	const URL_REGISTRATION = 'https://mail.legalbox.com/restful/registration';
-	const URL_APPLICATION = 'https://mail.legalbox.com/restful/application';
-	const URL_USER_GROUP = 'https://mail.legalbox.com/restful/userGroupBackoffice';
+	const URL_SESSION = 'https://certified.legalbox.com/restful/session';
+	const URL_REGISTRATION = 'https://certified.legalbox.com/restful/registration';
+	const URL_APPLICATION = 'https://certified.legalbox.com/restful/application';
+	const URL_USER_GROUP = 'https://certified.legalbox.com/restful/userGroupBackoffice';
 	
 	public static $debug = false;
 	
